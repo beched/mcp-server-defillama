@@ -9,19 +9,14 @@ import {
   GetStablecoinsInput,
   GetStablecoinDataInput
 } from "./defillama.types.js";
+import { getDefiLlamaClient } from "../clients/defillama.factory.js";
 
-const DEFILLAMA_API_BASE_URL = "https://api.llama.fi";
+// Get the appropriate client (real or mock) based on TEST_MODE
+const defiLlamaClient = getDefiLlamaClient();
 
 export const getProtocolsHandler = async (input: GetProtocolsInput): Promise<ToolResultSchema<any>> => {
   try {
-    const response = await fetch(`${DEFILLAMA_API_BASE_URL}/protocols`);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      return createErrorResponse(`Error getting protocols: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    
-    const protocolsData = await response.json();
+    const protocolsData = await defiLlamaClient.getProtocols();
     return createSuccessResponse(`Protocols: ${JSON.stringify(protocolsData, null, 2)}`);
   } catch (error) {
     return createErrorResponse(`Error getting protocols: ${error instanceof Error ? error.message : String(error)}`);
@@ -30,18 +25,7 @@ export const getProtocolsHandler = async (input: GetProtocolsInput): Promise<Too
 
 export const getProtocolTvlHandler = async (input: GetProtocolTvlInput): Promise<ToolResultSchema<any>> => {
   try {
-    if (!input.protocol) {
-      return createErrorResponse("Protocol name is required");
-    }
-    
-    const response = await fetch(`${DEFILLAMA_API_BASE_URL}/protocol/${input.protocol}`);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      return createErrorResponse(`Error getting protocol TVL: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    
-    const protocolData = await response.json();
+    const protocolData = await defiLlamaClient.getProtocolTvl(input.protocol);
     return createSuccessResponse(`Protocol TVL: ${JSON.stringify(protocolData, null, 2)}`);
   } catch (error) {
     return createErrorResponse(`Error getting protocol TVL: ${error instanceof Error ? error.message : String(error)}`);
@@ -50,18 +34,7 @@ export const getProtocolTvlHandler = async (input: GetProtocolTvlInput): Promise
 
 export const getChainTvlHandler = async (input: GetChainTvlInput): Promise<ToolResultSchema<any>> => {
   try {
-    if (!input.chain) {
-      return createErrorResponse("Chain name is required");
-    }
-    
-    const response = await fetch(`${DEFILLAMA_API_BASE_URL}/v2/historicalChainTvl/${input.chain}`);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      return createErrorResponse(`Error getting chain TVL: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    
-    const chainData = await response.json();
+    const chainData = await defiLlamaClient.getChainTvl(input.chain);
     return createSuccessResponse(`Chain TVL: ${JSON.stringify(chainData, null, 2)}`);
   } catch (error) {
     return createErrorResponse(`Error getting chain TVL: ${error instanceof Error ? error.message : String(error)}`);
@@ -70,19 +43,7 @@ export const getChainTvlHandler = async (input: GetChainTvlInput): Promise<ToolR
 
 export const getTokenPricesHandler = async (input: GetTokenPricesInput): Promise<ToolResultSchema<any>> => {
   try {
-    if (!input.coins || input.coins.length === 0) {
-      return createErrorResponse("At least one coin is required");
-    }
-    
-    const coinsParam = input.coins.join(',');
-    const response = await fetch(`${DEFILLAMA_API_BASE_URL}/prices/current/${coinsParam}`);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      return createErrorResponse(`Error getting token prices: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    
-    const pricesData = await response.json();
+    const pricesData = await defiLlamaClient.getTokenPrices(input.coins);
     return createSuccessResponse(`Token prices: ${JSON.stringify(pricesData, null, 2)}`);
   } catch (error) {
     return createErrorResponse(`Error getting token prices: ${error instanceof Error ? error.message : String(error)}`);
@@ -91,23 +52,7 @@ export const getTokenPricesHandler = async (input: GetTokenPricesInput): Promise
 
 export const getHistoricalPricesHandler = async (input: GetHistoricalPricesInput): Promise<ToolResultSchema<any>> => {
   try {
-    if (!input.coins || input.coins.length === 0) {
-      return createErrorResponse("At least one coin is required");
-    }
-    
-    if (!input.timestamp) {
-      return createErrorResponse("Timestamp is required");
-    }
-    
-    const coinsParam = input.coins.join(',');
-    const response = await fetch(`${DEFILLAMA_API_BASE_URL}/prices/historical/${input.timestamp}/${coinsParam}`);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      return createErrorResponse(`Error getting historical prices: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    
-    const historicalData = await response.json();
+    const historicalData = await defiLlamaClient.getHistoricalPrices(input.coins, input.timestamp);
     return createSuccessResponse(`Historical prices: ${JSON.stringify(historicalData, null, 2)}`);
   } catch (error) {
     return createErrorResponse(`Error getting historical prices: ${error instanceof Error ? error.message : String(error)}`);
@@ -116,14 +61,7 @@ export const getHistoricalPricesHandler = async (input: GetHistoricalPricesInput
 
 export const getStablecoinsHandler = async (input: GetStablecoinsInput): Promise<ToolResultSchema<any>> => {
   try {
-    const response = await fetch(`${DEFILLAMA_API_BASE_URL}/stablecoins`);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      return createErrorResponse(`Error getting stablecoins: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    
-    const stablecoinsData = await response.json();
+    const stablecoinsData = await defiLlamaClient.getStablecoins();
     return createSuccessResponse(`Stablecoins: ${JSON.stringify(stablecoinsData, null, 2)}`);
   } catch (error) {
     return createErrorResponse(`Error getting stablecoins: ${error instanceof Error ? error.message : String(error)}`);
@@ -132,18 +70,7 @@ export const getStablecoinsHandler = async (input: GetStablecoinsInput): Promise
 
 export const getStablecoinDataHandler = async (input: GetStablecoinDataInput): Promise<ToolResultSchema<any>> => {
   try {
-    if (!input.asset) {
-      return createErrorResponse("Asset name is required");
-    }
-    
-    const response = await fetch(`${DEFILLAMA_API_BASE_URL}/stablecoin/${input.asset}`);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      return createErrorResponse(`Error getting stablecoin data: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    
-    const stablecoinData = await response.json();
+    const stablecoinData = await defiLlamaClient.getStablecoinData(input.asset);
     return createSuccessResponse(`Stablecoin data: ${JSON.stringify(stablecoinData, null, 2)}`);
   } catch (error) {
     return createErrorResponse(`Error getting stablecoin data: ${error instanceof Error ? error.message : String(error)}`);
