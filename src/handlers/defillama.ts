@@ -14,7 +14,7 @@ import { getDefiLlamaClient } from "../clients/defillama.factory.js";
 // Get the appropriate client (real or mock) based on TEST_MODE
 const defiLlamaClient = getDefiLlamaClient();
 
-export const getProtocolsHandler = async (input: GetProtocolsInput): Promise<ToolResultSchema<any>> => {
+export const getProtocolsHandler = async (input: GetProtocolsInput): Promise<ToolResultSchema> => {
   try {
     const protocolsData = await defiLlamaClient.getProtocols();
     return createSuccessResponse(`Protocols: ${JSON.stringify(protocolsData, null, 2)}`);
@@ -23,7 +23,7 @@ export const getProtocolsHandler = async (input: GetProtocolsInput): Promise<Too
   }
 };
 
-export const getProtocolTvlHandler = async (input: GetProtocolTvlInput): Promise<ToolResultSchema<any>> => {
+export const getProtocolTvlHandler = async (input: GetProtocolTvlInput): Promise<ToolResultSchema> => {
   try {
     const protocolData = await defiLlamaClient.getProtocolTvl(input.protocol);
     return createSuccessResponse(`Protocol TVL: ${JSON.stringify(protocolData, null, 2)}`);
@@ -32,7 +32,7 @@ export const getProtocolTvlHandler = async (input: GetProtocolTvlInput): Promise
   }
 };
 
-export const getChainTvlHandler = async (input: GetChainTvlInput): Promise<ToolResultSchema<any>> => {
+export const getChainTvlHandler = async (input: GetChainTvlInput): Promise<ToolResultSchema> => {
   try {
     const chainData = await defiLlamaClient.getChainTvl(input.chain);
     return createSuccessResponse(`Chain TVL: ${JSON.stringify(chainData, null, 2)}`);
@@ -41,7 +41,7 @@ export const getChainTvlHandler = async (input: GetChainTvlInput): Promise<ToolR
   }
 };
 
-export const getTokenPricesHandler = async (input: GetTokenPricesInput): Promise<ToolResultSchema<any>> => {
+export const getTokenPricesHandler = async (input: GetTokenPricesInput): Promise<ToolResultSchema> => {
   try {
     const pricesData = await defiLlamaClient.getTokenPrices(input.coins);
     return createSuccessResponse(`Token prices: ${JSON.stringify(pricesData, null, 2)}`);
@@ -50,7 +50,7 @@ export const getTokenPricesHandler = async (input: GetTokenPricesInput): Promise
   }
 };
 
-export const getHistoricalPricesHandler = async (input: GetHistoricalPricesInput): Promise<ToolResultSchema<any>> => {
+export const getHistoricalPricesHandler = async (input: GetHistoricalPricesInput): Promise<ToolResultSchema> => {
   try {
     const historicalData = await defiLlamaClient.getHistoricalPrices(input.coins, input.timestamp);
     return createSuccessResponse(`Historical prices: ${JSON.stringify(historicalData, null, 2)}`);
@@ -59,7 +59,7 @@ export const getHistoricalPricesHandler = async (input: GetHistoricalPricesInput
   }
 };
 
-export const getStablecoinsHandler = async (input: GetStablecoinsInput): Promise<ToolResultSchema<any>> => {
+export const getStablecoinsHandler = async (input: GetStablecoinsInput): Promise<ToolResultSchema> => {
   try {
     const stablecoinsData = await defiLlamaClient.getStablecoins();
     return createSuccessResponse(`Stablecoins: ${JSON.stringify(stablecoinsData, null, 2)}`);
@@ -68,7 +68,7 @@ export const getStablecoinsHandler = async (input: GetStablecoinsInput): Promise
   }
 };
 
-export const getStablecoinDataHandler = async (input: GetStablecoinDataInput): Promise<ToolResultSchema<any>> => {
+export const getStablecoinDataHandler = async (input: GetStablecoinDataInput): Promise<ToolResultSchema> => {
   try {
     const stablecoinData = await defiLlamaClient.getStablecoinData(input.asset);
     return createSuccessResponse(`Stablecoin data: ${JSON.stringify(stablecoinData, null, 2)}`);

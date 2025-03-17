@@ -5,7 +5,7 @@ import { ToolResultSchema } from "../types.js";
  * @param message The error message
  * @returns A ToolResultSchema with the error message
  */
-export const createErrorResponse = <T>(message: string): ToolResultSchema<T> => {
+export const createErrorResponse = (message: string): ToolResultSchema => {
   return {
     content: [{
       type: "text",
@@ -20,7 +20,7 @@ export const createErrorResponse = <T>(message: string): ToolResultSchema<T> => 
  * @param message The success message
  * @returns A ToolResultSchema with the success message
  */
-export const createSuccessResponse = <T>(message: string): ToolResultSchema<T> => {
+export const createSuccessResponse = (message: string): ToolResultSchema => {
   return {
     content: [{
       type: "text",
