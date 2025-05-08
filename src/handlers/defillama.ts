@@ -121,7 +121,13 @@ export const searchProtocolsHandler = async (input: SearchProtocolsInput): Promi
       result = result.slice(0, input.limit);
     }
 
-    return createSuccessResponse(`Filtered protocols: ${JSON.stringify(result, null, 2)}`);
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify(result)
+      }],
+      isError: false
+    };
   } catch (error) {
     return createErrorResponse(`Error searching protocols: ${error instanceof Error ? error.message : String(error)}`);
   }

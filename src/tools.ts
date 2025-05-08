@@ -47,17 +47,17 @@ export const tools = [
       required: []
     }
   },
-  {
-    name: "defillama_get_protocol_tvl",
-    description: "Get TVL data for a specific protocol",
-    inputSchema: {
-      type: "object",
-      properties: {
-        protocol: { type: "string" }
-      },
-      required: ["protocol"]
-    }
-  },
+  // {
+  //   name: "defillama_get_protocol_tvl",
+  //   description: "Get TVL data for a specific protocol",
+  //   inputSchema: {
+  //     type: "object",
+  //     properties: {
+  //       protocol: { type: "string" }
+  //     },
+  //     required: ["protocol"]
+  //   }
+  // },
   {
     name: "defillama_get_chain_tvl",
     description: "Get TVL data for a specific chain",
@@ -124,7 +124,7 @@ type handlerDictionary = Record<typeof tools[number]["name"], (input: any) => an
 
 export const handlers: handlerDictionary = {
   //"defillama_get_protocols": getProtocolsHandler,
-  "defillama_get_protocol_tvl": getProtocolTvlHandler,
+  // "defillama_get_protocol_tvl": getProtocolTvlHandler,
   "defillama_get_chain_tvl": getChainTvlHandler,
   "defillama_get_token_prices": getTokenPricesHandler,
   "defillama_get_historical_prices": getHistoricalPricesHandler,
