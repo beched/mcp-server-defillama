@@ -94,9 +94,21 @@ export const searchProtocolsHandler = async (input: SearchProtocolsInput): Promi
       filteredProtocols = filteredProtocols.filter(protocol => {
         return Object.entries(input.filters!).every(([key, value]) => {
           const protocolValue = (protocol as any)[key];
+          
+          // Handle comparison operators for numeric fields
+          if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            if ('gt' in value) return protocolValue > value.gt;
+            if ('gte' in value) return protocolValue >= value.gte;
+            if ('lt' in value) return protocolValue < value.lt;
+            if ('lte' in value) return protocolValue <= value.lte;
+          }
+          
+          // Handle array fields
           if (Array.isArray(protocolValue)) {
             return protocolValue.includes(value);
           }
+          
+          // Handle regular equality
           return protocolValue === value;
         });
       });
