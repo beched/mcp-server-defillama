@@ -5,6 +5,10 @@ export interface GetProtocolsInput {
 export interface SearchProtocolsInput {
   nameRegex?: string;
   filters?: Record<string, any>;
+  sort?: {
+    field: string;
+    direction: 'asc' | 'desc';
+  };
   fields?: string[];
   limit?: number;
 }

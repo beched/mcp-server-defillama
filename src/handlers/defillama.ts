@@ -114,6 +114,41 @@ export const searchProtocolsHandler = async (input: SearchProtocolsInput): Promi
       });
     }
 
+    // Apply sorting if provided
+    if (input.sort) {
+      const { field, direction } = input.sort;
+      filteredProtocols.sort((a, b) => {
+        const aValue = (a as any)[field];
+        const bValue = (b as any)[field];
+        
+        // Handle numeric values
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return direction === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+        
+        // Handle string values
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return direction === 'asc' 
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+        
+        // Handle array values (sort by length)
+        if (Array.isArray(aValue) && Array.isArray(bValue)) {
+          return direction === 'asc'
+            ? aValue.length - bValue.length
+            : bValue.length - aValue.length;
+        }
+        
+        // Handle null/undefined values
+        if (aValue == null && bValue == null) return 0;
+        if (aValue == null) return direction === 'asc' ? -1 : 1;
+        if (bValue == null) return direction === 'asc' ? 1 : -1;
+        
+        return 0;
+      });
+    }
+
     // Select specified fields if provided
     let result = filteredProtocols;
     if (input.fields) {

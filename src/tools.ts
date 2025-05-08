@@ -21,7 +21,7 @@ export const tools = [
   // },
   {
     name: "defillama_search_protocols",
-    description: "Search protocols with filtering capabilities. Available fields for filtering and selection: id, name, address, symbol, url, description, chain, logo, audits, audit_note, gecko_id, cmcId, category, chains (array), oracles (array), forkedFrom (array), module, twitter, audit_links (array), parentProtocol, listedAt, methodology, slug, tvl, chainTvls (object), change_1h, change_1d, change_7d, tokenBreakdowns (object), mcap. Numeric fields (tvl, audits, change_1h, change_1d, change_7d) support comparison operators: gt (greater than), gte (greater than or equal), lt (less than), lte (less than or equal)",
+    description: "Search protocols with filtering capabilities. Available fields for filtering and selection: id, name, address, symbol, url, description, chain, logo, audits, audit_note, audit_links (array), gecko_id, cmcId, category, chains (array), oracles (array), forkedFrom (array), module, twitter, parentProtocol, listedAt, methodology, slug, tvl, chainTvls (object), change_1h, change_1d, change_7d, tokenBreakdowns (object), mcap. Numeric fields (tvl, audits, change_1h, change_1d, change_7d) support comparison operators: gt (greater than), gte (greater than or equal), lt (less than), lte (less than or equal)",
     inputSchema: {
       type: "object",
       properties: {
@@ -51,10 +51,26 @@ export const tools = [
             ]
           }
         },
+        sort: {
+          type: "object",
+          description: "Sort results by field and direction. Example: { field: 'tvl', direction: 'desc' }",
+          properties: {
+            field: { 
+              type: "string",
+              description: "Field to sort by. Available fields: id, name, address, symbol, url, description, chain, logo, audits, audit_note, audit_links, gecko_id, cmcId, category, chains, oracles, forkedFrom, module, twitter, parentProtocol, listedAt, methodology, slug, tvl, chainTvls, change_1h, change_1d, change_7d, tokenBreakdowns, mcap"
+            },
+            direction: {
+              type: "string",
+              enum: ["asc", "desc"],
+              description: "Sort direction: 'asc' for ascending, 'desc' for descending"
+            }
+          },
+          required: ["field", "direction"]
+        },
         fields: {
           type: "array",
           items: { type: "string" },
-          description: "Fields to include in the response. Available fields: id, name, address, symbol, url, description, chain, logo, audits, audit_note, gecko_id, cmcId, category, chains, oracles, forkedFrom, module, twitter, audit_links, parentProtocol, listedAt, methodology, slug, tvl, chainTvls, change_1h, change_1d, change_7d, tokenBreakdowns, mcap"
+          description: "Fields to include in the response. Available fields: id, name, address, symbol, url, description, chain, logo, audits, audit_note, audit_links, gecko_id, cmcId, category, chains, oracles, forkedFrom, module, twitter, parentProtocol, listedAt, methodology, slug, tvl, chainTvls, change_1h, change_1d, change_7d, tokenBreakdowns, mcap"
         },
         limit: {
           type: "number",
