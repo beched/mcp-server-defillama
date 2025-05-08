@@ -21,7 +21,7 @@ export const tools = [
   // },
   {
     name: "defillama_search_protocols",
-    description: "Search protocols with filtering capabilities",
+    description: "Search protocols with filtering capabilities. Available fields for filtering and selection: id, name, address, symbol, url, description, chain, logo, audits, audit_note, gecko_id, cmcId, category, chains (array), oracles (array), forkedFrom (array), module, twitter, audit_links (array), parentProtocol, listedAt, methodology, slug, tvl, chainTvls (object), change_1h, change_1d, change_7d, tokenBreakdowns (object), mcap",
     inputSchema: {
       type: "object",
       properties: {
@@ -31,13 +31,12 @@ export const tools = [
         },
         filters: {
           type: "object",
-          description: "Object containing field-value pairs to filter protocols",
-          additionalProperties: true
+          description: "Object containing field-value pairs to filter protocols. Available fields: id, name, address, symbol, url, description, chain, logo, audits, audit_note, gecko_id, cmcId, category, chains, oracles, forkedFrom, module, twitter, audit_links, parentProtocol, listedAt, methodology, slug, tvl, chainTvls, change_1h, change_1d, change_7d, tokenBreakdowns, mcap"
         },
         fields: {
           type: "array",
           items: { type: "string" },
-          description: "Fields to include in the response"
+          description: "Fields to include in the response. Available fields: id, name, address, symbol, url, description, chain, logo, audits, audit_note, gecko_id, cmcId, category, chains, oracles, forkedFrom, module, twitter, audit_links, parentProtocol, listedAt, methodology, slug, tvl, chainTvls, change_1h, change_1d, change_7d, tokenBreakdowns, mcap"
         },
         limit: {
           type: "number",
