@@ -10,15 +10,15 @@ import {
 } from "./handlers/defillama.js";
 
 export const tools = [
-  {
-    name: "defillama_get_protocols",
-    description: "List all protocols tracked by DefiLlama",
-    inputSchema: {
-      type: "object",
-      properties: {},
-      required: []
-    }
-  },
+  // {
+  //   name: "defillama_get_protocols",
+  //   description: "List all protocols tracked by DefiLlama",
+  //   inputSchema: {
+  //     type: "object",
+  //     properties: {},
+  //     required: []
+  //   }
+  // },
   {
     name: "defillama_search_protocols",
     description: "Search protocols with filtering capabilities",
