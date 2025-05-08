@@ -21,7 +21,7 @@ export const tools = [
   // },
   {
     name: "defillama_search_protocols",
-    description: "Search protocols with filtering capabilities. Available fields for filtering and selection: id, name, address, symbol, url, description, chain, logo, audits, audit_note, audit_links (array), gecko_id, cmcId, category, chains (array), oracles (array), forkedFrom (array), module, twitter, parentProtocol, listedAt, methodology, slug, tvl, chainTvls (object), change_1h, change_1d, change_7d, tokenBreakdowns (object), mcap. Numeric fields (tvl, audits, change_1h, change_1d, change_7d) support comparison operators: gt (greater than), gte (greater than or equal), lt (less than), lte (less than or equal)",
+    description: "Search protocols with filtering capabilities. Available fields for filtering and selection: name, address, symbol, url, description, chain, logo, audits, audit_note, audit_links (array), category, chains (array), oracles (array), forkedFrom (array), module, twitter, parentProtocol, slug, tvl, chainTvls (object, shows the tvl distribution across chains), change_1h (tvl changes in last hour), change_1d (tvl changes in last day), change_7d (tvl changes in last 7 days). Numeric fields (tvl, audits, change_1h, change_1d, change_7d) support comparison operators: gt (greater than), gte (greater than or equal), lt (less than), lte (less than or equal)",
     inputSchema: {
       type: "object",
       properties: {
@@ -91,17 +91,17 @@ export const tools = [
   //     required: ["protocol"]
   //   }
   // },
-  {
-    name: "defillama_get_chain_tvl",
-    description: "Get TVL data for a specific chain",
-    inputSchema: {
-      type: "object",
-      properties: {
-        chain: { type: "string" }
-      },
-      required: ["chain"]
-    }
-  },
+  // {
+  //   name: "defillama_get_chain_tvl",
+  //   description: "Get TVL data for a specific chain",
+  //   inputSchema: {
+  //     type: "object",
+  //     properties: {
+  //       chain: { type: "string" }
+  //     },
+  //     required: ["chain"]
+  //   }
+  // },
   {
     name: "defillama_get_token_prices",
     description: "Get current prices of tokens",
@@ -158,7 +158,7 @@ type handlerDictionary = Record<typeof tools[number]["name"], (input: any) => an
 export const handlers: handlerDictionary = {
   //"defillama_get_protocols": getProtocolsHandler,
   // "defillama_get_protocol_tvl": getProtocolTvlHandler,
-  "defillama_get_chain_tvl": getChainTvlHandler,
+  //"defillama_get_chain_tvl": getChainTvlHandler,
   "defillama_get_token_prices": getTokenPricesHandler,
   "defillama_get_historical_prices": getHistoricalPricesHandler,
   "defillama_get_stablecoins": getStablecoinsHandler,
