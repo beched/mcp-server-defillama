@@ -2,6 +2,13 @@ export interface GetProtocolsInput {
   // No input parameters needed
 }
 
+export interface SearchProtocolsInput {
+  nameRegex?: string;
+  filters?: Record<string, any>;
+  fields?: string[];
+  limit?: number;
+}
+
 export interface GetProtocolTvlInput {
   protocol: string;
 }

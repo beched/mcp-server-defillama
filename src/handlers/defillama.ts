@@ -7,7 +7,8 @@ import {
   GetTokenPricesInput,
   GetHistoricalPricesInput,
   GetStablecoinsInput,
-  GetStablecoinDataInput
+  GetStablecoinDataInput,
+  SearchProtocolsInput
 } from "./defillama.types.js";
 import { getDefiLlamaClient } from "../clients/defillama.factory.js";
 
@@ -74,5 +75,54 @@ export const getStablecoinDataHandler = async (input: GetStablecoinDataInput): P
     return createSuccessResponse(`Stablecoin data: ${JSON.stringify(stablecoinData, null, 2)}`);
   } catch (error) {
     return createErrorResponse(`Error getting stablecoin data: ${error instanceof Error ? error.message : String(error)}`);
+  }
+};
+
+export const searchProtocolsHandler = async (input: SearchProtocolsInput): Promise<ToolResultSchema> => {
+  try {
+    const protocolsData = await defiLlamaClient.getProtocols();
+    
+    // Apply name regex filter if provided
+    let filteredProtocols = protocolsData;
+    if (input.nameRegex) {
+      const nameRegex = new RegExp(input.nameRegex, 'i');
+      filteredProtocols = filteredProtocols.filter(protocol => nameRegex.test(protocol.name));
+    }
+
+    // Apply additional filters if provided
+    if (input.filters) {
+      filteredProtocols = filteredProtocols.filter(protocol => {
+        return Object.entries(input.filters!).every(([key, value]) => {
+          const protocolValue = (protocol as any)[key];
+          if (Array.isArray(protocolValue)) {
+            return protocolValue.includes(value);
+          }
+          return protocolValue === value;
+        });
+      });
+    }
+
+    // Select specified fields if provided
+    let result = filteredProtocols;
+    if (input.fields) {
+      result = filteredProtocols.map(protocol => {
+        const filteredProtocol: Record<string, unknown> = {};
+        input.fields!.forEach(field => {
+          if (field in protocol) {
+            filteredProtocol[field] = (protocol as any)[field];
+          }
+        });
+        return filteredProtocol as any;
+      });
+    }
+
+    // Apply limit if provided
+    if (input.limit) {
+      result = result.slice(0, input.limit);
+    }
+
+    return createSuccessResponse(`Filtered protocols: ${JSON.stringify(result, null, 2)}`);
+  } catch (error) {
+    return createErrorResponse(`Error searching protocols: ${error instanceof Error ? error.message : String(error)}`);
   }
 };

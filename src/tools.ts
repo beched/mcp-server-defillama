@@ -5,7 +5,8 @@ import {
   getTokenPricesHandler,
   getHistoricalPricesHandler,
   getStablecoinsHandler,
-  getStablecoinDataHandler
+  getStablecoinDataHandler,
+  searchProtocolsHandler
 } from "./handlers/defillama.js";
 
 export const tools = [
@@ -15,6 +16,34 @@ export const tools = [
     inputSchema: {
       type: "object",
       properties: {},
+      required: []
+    }
+  },
+  {
+    name: "defillama_search_protocols",
+    description: "Search protocols with filtering capabilities",
+    inputSchema: {
+      type: "object",
+      properties: {
+        nameRegex: { 
+          type: "string",
+          description: "Regular expression to match protocol names"
+        },
+        filters: {
+          type: "object",
+          description: "Object containing field-value pairs to filter protocols",
+          additionalProperties: true
+        },
+        fields: {
+          type: "array",
+          items: { type: "string" },
+          description: "Fields to include in the response"
+        },
+        limit: {
+          type: "number",
+          description: "Maximum number of results to return"
+        }
+      },
       required: []
     }
   },
@@ -94,11 +123,12 @@ export const tools = [
 type handlerDictionary = Record<typeof tools[number]["name"], (input: any) => any>;
 
 export const handlers: handlerDictionary = {
-  "defillama_get_protocols": getProtocolsHandler,
+  //"defillama_get_protocols": getProtocolsHandler,
   "defillama_get_protocol_tvl": getProtocolTvlHandler,
   "defillama_get_chain_tvl": getChainTvlHandler,
   "defillama_get_token_prices": getTokenPricesHandler,
   "defillama_get_historical_prices": getHistoricalPricesHandler,
   "defillama_get_stablecoins": getStablecoinsHandler,
-  "defillama_get_stablecoin_data": getStablecoinDataHandler
+  "defillama_get_stablecoin_data": getStablecoinDataHandler,
+  "defillama_search_protocols": searchProtocolsHandler
 };
